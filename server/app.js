@@ -15,8 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extends: true }));
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://your-frontend-domain.com"
+  "http://localhost:5173"
 ];
 
 app.use(
