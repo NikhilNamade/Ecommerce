@@ -14,12 +14,24 @@ connectTomongoose();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extends: true }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://your-frontend-domain.com"
+];
+
 app.use(
   cors({
-    origin: "*",
-    credentials: true, // REQUIRED for cookies / auth
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
+
 
 app.use("/auth/admin", Admin);
 app.use("/auth/user", User);
