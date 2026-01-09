@@ -13,23 +13,17 @@ connectTomongoose();
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extends: true }));
-const allowedOrigins = [
-  "http://localhost:5173"
-];
-
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend-url.onrender.com"
+    ],
     credentials: true,
   })
 );
+
 
 
 app.use("/auth/admin", Admin);
@@ -42,6 +36,9 @@ app.use(errorHandler);
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-app.listen(3000, "0.0.0.0", () => {
-  console.log("Server is listen on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
