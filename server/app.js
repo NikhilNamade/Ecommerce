@@ -16,10 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extends: true }));
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow requests with no origin (Postman, mobile apps)
-      callback(null, origin);
-    },
+    origin: "*",
     credentials: true, // REQUIRED for cookies / auth
   })
 );
