@@ -16,14 +16,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://ecommerce-gray-five-88.vercel.app"
+  "https://ecommerce-gray-five-88.vercel.app",
+  "*"
 ];
 
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
